@@ -87,7 +87,7 @@ namespace tthk_kinoteater
                 {
                     session.Id = Convert.ToInt32(reader["Id"].ToString());
                     session.Movie = GetMovie(Convert.ToInt32(reader["Id"].ToString()));
-                    session.Time = Convert.ToDateTime(reader["Time"].ToString());
+                    session.StartTime = Convert.ToDateTime(reader["StartTime"].ToString());
                     sessions.Add(session);
                 }
             }
