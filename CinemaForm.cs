@@ -16,6 +16,12 @@ namespace tthk_kinoteater
         public CinemaForm()
         {
             DataHandler dataHandler = new DataHandler();
+            Panel moviePanel = new Panel();
+            Label movieTitleLabel = new Label();
+            Label movieDescriptionLabel = new Label();
+            Label movieDurationLabel = new Label();
+            Label movieStartTimeLabel = new Label();
+            Label movieEndTimeLabel = new Label();
             InitializeComponent();
         }
     }
