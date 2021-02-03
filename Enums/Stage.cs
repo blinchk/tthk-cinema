@@ -8,7 +8,8 @@ namespace tthk_kinoteater.Enums
 {
     enum Stage
     {
-        MainPage,
+        MovieOverview,
+        SessionOverview,
         PlaceChoice,
         Reception,
         Congratulation
