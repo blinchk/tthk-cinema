@@ -39,6 +39,7 @@ namespace tthk_kinoteater
                     movie.Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()));
                 }
             }
+            TryToCloseConnection();
             return movie;
         }
 
@@ -54,6 +55,7 @@ namespace tthk_kinoteater
                     hall.Title = reader["Title"].ToString();
                 }
             }
+            TryToCloseConnection();
             return hall;
         }
 
@@ -73,6 +75,7 @@ namespace tthk_kinoteater
                     places.Add(place);
                 }
             }
+            TryToCloseConnection();
             return places;
         }
 
@@ -91,6 +94,7 @@ namespace tthk_kinoteater
                     sessions.Add(session);
                 }
             }
+            TryToCloseConnection();
             return sessions;
         }
     }

@@ -12,6 +12,8 @@ namespace tthk_kinoteater.Models
         public Movie Movie { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime => StartTime + Movie.Duration;
+        public int Duration => Movie.Duration.Minutes;
+        public string DurationString => Duration + " min";
         public Hall Hall { get; set; }
         public int NumberOfTickets => Hall.NumberOfPlaces;
     }
