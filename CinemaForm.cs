@@ -10,10 +10,11 @@ using System.Windows.Forms;
 
 namespace tthk_kinoteater
 {
-    public partial class Form1 : Form
+    public partial class CinemaForm : Form
     {
-        public Form1()
+        public CinemaForm()
         {
+            DataHandler dataHandler = new DataHandler();
             InitializeComponent();
         }
     }

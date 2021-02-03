@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace tthk_kinoteater.Models
 {
-    class Session
+    class Movie
     {
         public int Id { get; set; }
-        public Movie Movie { get; set; }
-        public DateTime Time { get; set; }
-        public Hall Hall { get; set; }
-        public int NumberOfTickets => Hall.NumberOfPlaces;
+        public string Title { get; set; }
+        public string Director { get; set; }
+        public int Year { get; set; }
     }
 }
