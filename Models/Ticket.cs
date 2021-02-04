@@ -12,6 +12,7 @@ namespace tthk_kinoteater.Models
         public Place Place { get; set; }
         public Hall Hall => Place.Hall;
         public Session Session { get; set; }
-        public DateTime Time => Session.Time;
+        public DateTime StartTime => Session.StartTime;
+        public DateTime EndTime => Session.EndTime;
     }
 }
