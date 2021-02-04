@@ -68,6 +68,7 @@
       <DependentUpon>CinemaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataHandler.cs" />
+    <Compile Include="Enums\HallSize.cs" />
     <Compile Include="Enums\Stage.cs" />
     <Compile Include="Models\Hall.cs" />
     <Compile Include="Models\Movie.cs" />

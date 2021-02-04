@@ -11,7 +11,7 @@ namespace tthk_kinoteater
         private readonly SqlConnection connection = new SqlConnection(
             @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =|DataDirectory|\AppData\cinema.mdf; Integrated Security = True");
         private SqlCommand command;
-        
+
         public DataHandler()
         {
             connection.Open();
@@ -96,6 +96,27 @@ namespace tthk_kinoteater
             }
             TryToCloseConnection();
             return sessions;
+        }
+
+        public List<Movie> GetMovies()
+        {
+            List<Movie> movies = new List<Movie>();
+            command = new SqlCommand("SELECT * FROM Movies;");
+            Movie movie = new Movie();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    movie.Id = Convert.ToInt32(reader["Id"].ToString());
+                    movie.Title = reader["Title"].ToString();
+                    movie.Year = Convert.ToInt32(reader["Email"].ToString());
+                    movie.Director = reader["Director"].ToString();
+                    movie.Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()));
+                    movies.Add(movie);
+                }
+            }
+            TryToCloseConnection();
+            return movies;
         }
     }
 }
