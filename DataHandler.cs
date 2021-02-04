@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using tthk_kinoteater.Enums;
 using tthk_kinoteater.Models;
 
 namespace tthk_kinoteater
 {
     class DataHandler
     {
-        private readonly SqlConnection connection = new SqlConnection(
+        private SqlConnection connection = new SqlConnection(
             @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =|DataDirectory|\AppData\cinema.mdf; Integrated Security = True");
         private SqlCommand command;
 
@@ -25,7 +26,7 @@ namespace tthk_kinoteater
 
         public Movie GetMovie(int id)
         {
-            command = new SqlCommand("SELECT * FROM Movies WHERE Id = @id");
+            command = new SqlCommand("SELECT * FROM Movies WHERE Id = @id", connection);
             command.Parameters.AddWithValue("@id", id);
             Movie movie = new Movie();
             using (var reader = command.ExecuteReader())
@@ -45,7 +46,7 @@ namespace tthk_kinoteater
 
         public Hall GetHall(int id)
         {
-            command = new SqlCommand("SELECT * FROM Halls");
+            command = new SqlCommand("SELECT * FROM Halls", connection);
             Hall hall = new Hall();
             using (var reader = command.ExecuteReader())
             {
@@ -62,13 +63,13 @@ namespace tthk_kinoteater
         public List<Place> GetPlaces(Hall hall)
         {
             List<Place> places = new List<Place>();
-            command = new SqlCommand("SELECT * FROM Places WHERE Hall = @id");
+            command = new SqlCommand("SELECT * FROM Places WHERE Hall = @id", connection);
             command.Parameters.AddWithValue("@id", hall.Id);
-            Place place = new Place();
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
+                    Place place = new Place();
                     place.Id = Convert.ToInt32(reader["Id"].ToString());
                     place.Number = Convert.ToInt32(reader["Number"].ToString());
                     place.Row = Convert.ToInt32(reader["Row"].ToString());
@@ -82,12 +83,12 @@ namespace tthk_kinoteater
         public List<Session> GetSessions()
         {
             List<Session> sessions = new List<Session>();
-            command = new SqlCommand("SELECT * FROM Sessions;");
-            Session session = new Session();
+            command = new SqlCommand("SELECT * FROM Sessions;", connection);
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
+                    Session session = new Session();
                     session.Id = Convert.ToInt32(reader["Id"].ToString());
                     session.Movie = GetMovie(Convert.ToInt32(reader["Id"].ToString()));
                     session.StartTime = Convert.ToDateTime(reader["StartTime"].ToString());
@@ -101,15 +102,15 @@ namespace tthk_kinoteater
         public List<Movie> GetMovies()
         {
             List<Movie> movies = new List<Movie>();
-            command = new SqlCommand("SELECT * FROM Movies;");
-            Movie movie = new Movie();
+            command = new SqlCommand("SELECT * FROM Movies;", connection);
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
+                    Movie movie = new Movie();
                     movie.Id = Convert.ToInt32(reader["Id"].ToString());
                     movie.Title = reader["Title"].ToString();
-                    movie.Year = Convert.ToInt32(reader["Email"].ToString());
+                    movie.Year = Convert.ToInt32(reader["Year"].ToString());
                     movie.Director = reader["Director"].ToString();
                     movie.Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()));
                     movies.Add(movie);
@@ -117,6 +118,17 @@ namespace tthk_kinoteater
             }
             TryToCloseConnection();
             return movies;
+        }
+
+        private void InitializePlaces()
+        {
+            for (int i = 1; i < Convert.ToInt32(HallSize.Small)/10+1; i++)
+            {
+                for (int j = 1; j < 11; j++)
+                {
+
+                }
+            }
         }
     }
 }

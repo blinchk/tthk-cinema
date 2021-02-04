@@ -16,6 +16,7 @@ namespace tthk_kinoteater
         public CinemaForm()
         {
             stage = defaultStage;
+            DisplayMovies();
             InitializeComponent();
         }
 
@@ -53,6 +54,7 @@ namespace tthk_kinoteater
             string[] moviesDirectors = movies.Select(m => m.Director)
                 .Distinct()
                 .ToArray();
+            movies.ForEach(m => Console.WriteLine(m.Title));
         }
 
         private void DisplayCurrentStage()
