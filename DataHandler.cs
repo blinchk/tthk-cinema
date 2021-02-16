@@ -9,7 +9,7 @@ namespace tthk_kinoteater
 {
     class DataHandler
     {
-        private SqlConnection connection = new SqlConnection(
+        private readonly SqlConnection connection = new SqlConnection(
             @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =|DataDirectory|\AppData\cinema.mdf; Integrated Security = True");
         private SqlCommand command;
 
@@ -22,6 +22,21 @@ namespace tthk_kinoteater
         {
             if (connection != null && connection.State == ConnectionState.Open)
                 connection.Close();
+        }
+
+        private HallSize ConvertPlacesNumber(int size)
+        {
+            switch(size)
+            {
+                case 1:
+                    return HallSize.Small;
+                case 2:
+                    return HallSize.Medium;
+                case 3:
+                    return HallSize.Big;
+                default:
+                    return HallSize.Small;
+            }
         }
 
         public Movie GetMovie(int id)
@@ -47,13 +62,14 @@ namespace tthk_kinoteater
         public Hall GetHall(int id)
         {
             command = new SqlCommand("SELECT * FROM Halls", connection);
-            Hall hall = new Hall();
+            var hall = new Hall();
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     hall.Id = id;
                     hall.Title = reader["Title"].ToString();
+                    hall.NumberOfPlaces = ConvertPlacesNumber(Convert.ToInt32(reader["HallSize"].ToString()));
                 }
             }
             TryToCloseConnection();
@@ -63,20 +79,18 @@ namespace tthk_kinoteater
         public List<Place> GetPlaces(Hall hall)
         {
             List<Place> places = new List<Place>();
-            command = new SqlCommand("SELECT * FROM Places WHERE Hall = @id", connection);
-            command.Parameters.AddWithValue("@id", hall.Id);
-            using (var reader = command.ExecuteReader())
+            int numberOfPlaces = Convert.ToInt32(hall.NumberOfPlaces);
+            for (int row = 1; row <= numberOfPlaces/10; row++)
             {
-                while (reader.Read())
+                for (int column = 1; column <= 10; column++)
                 {
-                    Place place = new Place();
-                    place.Id = Convert.ToInt32(reader["Id"].ToString());
-                    place.Number = Convert.ToInt32(reader["Number"].ToString());
-                    place.Row = Convert.ToInt32(reader["Row"].ToString());
-                    places.Add(place);
+                    places.Add(new Place() { 
+                        Hall = hall,
+                        Number = column,
+                        Row = row
+                    });
                 }
             }
-            TryToCloseConnection();
             return places;
         }
 
@@ -88,10 +102,12 @@ namespace tthk_kinoteater
             {
                 while (reader.Read())
                 {
-                    Session session = new Session();
-                    session.Id = Convert.ToInt32(reader["Id"].ToString());
-                    session.Movie = GetMovie(Convert.ToInt32(reader["Id"].ToString()));
-                    session.StartTime = Convert.ToDateTime(reader["StartTime"].ToString());
+                    Session session = new Session
+                    {
+                        Id = Convert.ToInt32(reader["Id"].ToString()),
+                        Movie = GetMovie(Convert.ToInt32(reader["Id"].ToString())),
+                        StartTime = Convert.ToDateTime(reader["StartTime"].ToString())
+                    };
                     sessions.Add(session);
                 }
             }
@@ -107,28 +123,19 @@ namespace tthk_kinoteater
             {
                 while (reader.Read())
                 {
-                    Movie movie = new Movie();
-                    movie.Id = Convert.ToInt32(reader["Id"].ToString());
-                    movie.Title = reader["Title"].ToString();
-                    movie.Year = Convert.ToInt32(reader["Year"].ToString());
-                    movie.Director = reader["Director"].ToString();
-                    movie.Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()));
+                    Movie movie = new Movie
+                    {
+                        Id = Convert.ToInt32(reader["Id"].ToString()),
+                        Title = reader["Title"].ToString(),
+                        Year = Convert.ToInt32(reader["Year"].ToString()),
+                        Director = reader["Director"].ToString(),
+                        Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()))
+                    };
                     movies.Add(movie);
                 }
             }
             TryToCloseConnection();
             return movies;
-        }
-
-        private void InitializePlaces()
-        {
-            for (int i = 1; i < Convert.ToInt32(HallSize.Small)/10+1; i++)
-            {
-                for (int j = 1; j < 11; j++)
-                {
-
-                }
-            }
         }
     }
 }
