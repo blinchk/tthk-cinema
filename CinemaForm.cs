@@ -11,11 +11,21 @@ namespace tthk_kinoteater
     public partial class CinemaForm : Form
     {
         DataHandler dataHandler;
-        private Stage stage;
-        const Stage defaultStage = Stage.SessionOverview;
+
+        private Stage Stage
+        {
+            get => Stage;
+            set
+            {
+                Stage = value;
+                DisplayCurrentStage();
+            }
+        }
+
+        const Stage DefaultStage = Stage.SessionOverview;
         public CinemaForm()
         {
-            stage = defaultStage;
+            Stage = DefaultStage;
             DisplayMovies();
             InitializeComponent();
         }
@@ -56,10 +66,10 @@ namespace tthk_kinoteater
                 .ToArray();
             movies.ForEach(m => Console.WriteLine(m.Title));
         }
-
+        
         private void DisplayCurrentStage()
         {
-            switch (stage)
+            switch (Stage)
             {
                 case Stage.SessionOverview:
                     DisplaySessions(DateTime.Now);
