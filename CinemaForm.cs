@@ -33,7 +33,7 @@ namespace tthk_kinoteater
             ForeColor = Color.White;
             DisplayCurrentStage();
             InitializeComponent();
-        }
+            }
 
         private void DisplaySessions(DateTime date)
         {
