@@ -12,6 +12,6 @@ namespace tthk_kinoteater.Models
         public string TimeString => $"{StartTime.TimeOfDay}-{EndTime.TimeOfDay}";
         public string DurationString => Duration + " min";
         public Hall Hall { get; set; }
-        public int NumberOfTickets => Hall.NumberOfPlaces;
+        public int NumberOfTickets => Convert.ToInt32(Hall.NumberOfPlaces);
     }
 }
