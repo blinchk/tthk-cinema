@@ -1,6 +1,6 @@
 ﻿namespace tthk_kinoteater.Enums
 {
-    enum HallSize
+    public enum HallSize
     {
         Small = 30,
         Medium = 70,

@@ -2,7 +2,7 @@
 
 namespace tthk_kinoteater.Models
 {
-    class Movie
+    public class Movie
     {
         public int Id { get; set; }
         public string Title { get; set; }
