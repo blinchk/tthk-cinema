@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using tthk_kinoteater.Interfaces;
 using tthk_kinoteater.Models;
 
 namespace tthk_kinoteater.Views
 {
     public partial class MoviePage : UserControl
     {
-        private IMovie dataHandler;
+        private DataHandler dataHandler;
         private ComboBox yearsComboBox;
         private ComboBox directorsComboBox;
         private MovieList movieList;
