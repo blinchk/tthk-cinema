@@ -24,14 +24,14 @@ namespace tthk_kinoteater
             }
         }
 
-        const Stage DefaultStage = Stage.SessionOverview;
+        const Stage DefaultStage = Stage.MovieOverview;
         static Color SpaceGray = Color.FromArgb(52, 61, 70);
         public CinemaForm()
         {
             Stage = DefaultStage;
             BackColor = SpaceGray;
             ForeColor = Color.White;
-            DisplayMovies();
+            DisplayCurrentStage();
             InitializeComponent();
         }
 
@@ -40,6 +40,14 @@ namespace tthk_kinoteater
             dataHandler = new DataHandler();
             List<Session> sessions = dataHandler.GetSessions()
                 .Where(s => s.StartTime.Date == date.Date)
+                .ToList();
+        }
+        
+        private void DisplaySessions(Movie movie)
+        {
+            dataHandler = new DataHandler();
+            List<Session> sessions = dataHandler.GetSessions()
+                .Where(s => s.Movie == movie)
                 .ToList();
         }
 
@@ -60,7 +68,9 @@ namespace tthk_kinoteater
             };
         }
 
-        private void DisplayMovies()
+        ComboBox yearsComboBox;
+
+        private List<Movie> LoadMovies()
         {
             Label moviesStageTitleLabel = new Label()
             {
@@ -71,20 +81,91 @@ namespace tthk_kinoteater
                 TextAlign = ContentAlignment.MiddleCenter,
                 ForeColor = Color.Orange
             };
+            Controls.Add(moviesStageTitleLabel);
             dataHandler = new DataHandler();
             List<Movie> movies = dataHandler.GetMovies();
-            int[] moviesYears = movies.Select(m => m.Year)
-                .ToArray();
-            string[] moviesDirectors = movies.Select(m => m.Director)
-                .Distinct()
-                .ToArray();
-            movies.ForEach(m => Console.WriteLine(m.Title));
+            string[] moviesDirectors = GetMoviesDirectors(movies);
+            ComboBox directorsComboBox = new ComboBox()
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                DataSource = moviesDirectors,
+                Left = 50,
+                Top = moviesStageTitleLabel.Top + 50,
+                Width = 125
+            };
+            string[] moviesYears = GetMoviesYears(movies);
+            yearsComboBox = new ComboBox()
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                DataSource = moviesYears,
+                Left = directorsComboBox.Left + 125,
+                Top = moviesStageTitleLabel.Top + 50,
+                Width = 50
+            };
+            yearsComboBox.SelectedValueChanged += YearsComboBox_SelectedValueChanged;
+            Controls.AddRange(new Control[] { yearsComboBox, directorsComboBox });
+            return movies;
+        }
+
+        private void DisplayMovies()
+        {
+            var movies = LoadMovies();
             for (int i = 0; i < movies.Count; i++)
             {
                 var movie = movies[i];
                 InitializeMovie(movie, i + 1);
             }
-            Controls.Add(moviesStageTitleLabel);
+        }
+
+        private void DisplayMovies(int year)
+        {
+            var movies = LoadMovies().Where(m => m.Year == year).ToList();
+            for (int i = 0; i < movies.Count; i++)
+            {
+                var movie = movies[i];
+                InitializeMovie(movie, i + 1);
+            }
+        }
+
+        private void DisplayMovies(string director)
+        {
+            var movies = LoadMovies().Where(m => m.Director == director).ToList();
+            for (int i = 0; i < movies.Count; i++)
+            {
+                var movie = movies[i];
+                InitializeMovie(movie, i + 1);
+            }
+        }
+
+        private void YearsComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            string yearString = yearsComboBox.SelectedItem.ToString();
+            if (!String.IsNullOrEmpty(yearString))
+            {
+                int year = Convert.ToInt32(yearString);
+                DisplayMovies(year);
+            }
+            else
+            {
+                DisplayMovies();
+            }
+        }
+
+        private string[] GetMoviesDirectors(List<Movie> movies)
+        {
+            return movies.Select(m => m.Director)
+                .Append("")
+                .OrderBy(d => d)
+                .Distinct()
+                .ToArray();
+        }
+        private string[] GetMoviesYears(List<Movie> movies)
+        {
+            return movies.Select(m => m.Year.ToString())
+                .Append("")
+                .OrderBy(y => y)
+                .Distinct()
+                .ToArray();
         }
 
         private void InitializeMovie(Movie movie, int index)
@@ -93,7 +174,7 @@ namespace tthk_kinoteater
             {
                 Text = movie.Title,
                 Width = 300,
-                Location = new Point(50, 50 * index),
+                Location = new Point(50, 50 + 50 * index),
                 Height = 20,
                 Font = new Font(FontFamily.GenericSansSerif, 10)
             };
@@ -127,19 +208,19 @@ namespace tthk_kinoteater
             };
             watchSessionsButton.FlatAppearance.BorderSize = 1;
             watchSessionsButton.Top += 15;
-            watchSessionsButton.Click += WatchSessionsButton_Click;
+            watchSessionsButton.Click += (s, e) =>
+            {
+                Controls.Clear();
+                DisplaySessions(movie);
+            };
             Controls.AddRange(new Control[] { movieTitleLabel, movieDirectorLabel, movieYearLabel, movieDurationLabel, watchSessionsButton });
-        }
-
-        private void WatchSessionsButton_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private void DisplayCurrentStage()
         {
-            switch (Stage)
-            {
+            Controls.Clear();
+            switch (stage)
+            {  
                 case Stage.SessionOverview:
                     DisplaySessions(DateTime.Now);
                     break;
