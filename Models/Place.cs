@@ -9,17 +9,17 @@ namespace tthk_kinoteater.Models
         public int Number { get; set; }
         public int Row { get; set; }
         public Hall Hall { get; set; }
+        public PlaceStatus IsBusy { get; set; }
         public CheckBox GetCheckBox(Session session)
         {
             CheckBox placeCheckBox = new CheckBox();
-            PlaceStatus placeStatus = new PlaceStatus();
-            if (placeStatus == PlaceStatus.Occupied)
+            if (IsBusy == PlaceStatus.Occupied)
             {
                 placeCheckBox.Enabled = false;
                 placeCheckBox.Checked = true;
                 placeCheckBox.BackColor = Color.Red;
             }
-            else if (placeStatus == PlaceStatus.Selected)
+            else if (IsBusy == PlaceStatus.Selected)
             {
                 placeCheckBox.Checked = true;
                 placeCheckBox.BackColor = Color.Yellow;

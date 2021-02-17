@@ -28,6 +28,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,6 +85,24 @@
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\MovieList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\MovieList.Designer.cs">
+      <DependentUpon>MovieList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MoviePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\MoviePage.Designer.cs">
+      <DependentUpon>MoviePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MovieView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\MovieView.Designer.cs">
+      <DependentUpon>MovieView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CinemaForm.resx">
       <DependentUpon>CinemaForm.cs</DependentUpon>
     </EmbeddedResource>
