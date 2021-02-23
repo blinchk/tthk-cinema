@@ -20,7 +20,7 @@ namespace tthk_kinoteater.Views
             InitializeComponent();
             dataHandler = new DataHandler();
             movies = dataHandler.GetMovies();
-            LoadMoviesHeaders(movies);
+            LoadHeaders(movies);
             movieList = new MovieList(movies)
             {
                 Size = new Size(450, 500),
@@ -29,7 +29,7 @@ namespace tthk_kinoteater.Views
             Controls.Add(movieList);
         }
         
-        private void LoadMoviesHeaders(List<Movie> movies)
+        private void LoadHeaders(List<Movie> moviesToDistinct)
         {
             Label moviesStageTitleLabel = new Label()
             {
@@ -41,7 +41,7 @@ namespace tthk_kinoteater.Views
                 ForeColor = Color.Orange
             };
             Controls.Add(moviesStageTitleLabel);
-            string[] moviesDirectors = GetMoviesDirectors(movies);
+            string[] moviesDirectors = GetDirectors(moviesToDistinct);
             directorsComboBox = new ComboBox()
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
@@ -50,7 +50,7 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 125
             };
-            string[] moviesYears = GetMoviesYears(movies);
+            string[] moviesYears = GetYears(moviesToDistinct);
             yearsComboBox = new ComboBox()
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
@@ -88,18 +88,18 @@ namespace tthk_kinoteater.Views
             Controls.Add(movieList);
         }
 
-        private string[] GetMoviesDirectors(List<Movie> movies)
+        private string[] GetDirectors(List<Movie> moviesToFilter)
         {
-            return movies.Select(m => m.Director)
+            return moviesToFilter.Select(m => m.Director)
                 .Append("")
                 .OrderBy(d => d)
                 .Distinct()
                 .ToArray();
         }
         
-        private string[] GetMoviesYears(List<Movie> movies)
+        private string[] GetYears(List<Movie> moviesToFilter)
         {
-            return movies.Select(m => m.Year.ToString())
+            return moviesToFilter.Select(m => m.Year.ToString())
                 .Append("")
                 .OrderBy(y => y)
                 .Distinct()

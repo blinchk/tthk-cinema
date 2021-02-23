@@ -4,20 +4,18 @@ using tthk_kinoteater.Models;
 
 namespace tthk_kinoteater.Views
 {
-    public partial class MovieView : UserControl
+    public partial class SessionView : UserControl
     {
-        public MovieView(Movie movie)
+        public SessionView(Session session)
         {
-            Control[] controls = InitializeControls(movie);
-            Controls.AddRange(controls);
             InitializeComponent();
         }
-
-        private Control[] InitializeControls(Movie movie)
+        
+        private Control[] InitializeControls(Session session)
         {
             Label movieTitleLabel = new Label()
             {
-                Text = movie.Title,
+                Text = session.Movie.Title,
                 Width = 300,
                 Location = new Point(50, 50),
                 Height = 20,
@@ -25,40 +23,40 @@ namespace tthk_kinoteater.Views
             };
             Label movieDirectorLabel = new Label()
             {
-                Text = movie.Director,
+                Text = session.Movie.Director,
                 Height = 15,
                 Location = movieTitleLabel.Location
             };
             movieDirectorLabel.Top += 20;
             Label movieYearLabel = new Label()
             {
-                Text = movie.YearString,
+                Text = session.Movie.YearString,
                 Height = 15,
                 Location = movieDirectorLabel.Location
             };
             movieYearLabel.Top += 15;
             Label movieDurationLabel = new Label()
             {
-                Text = movie.DurationString,
+                Text = session.Movie.DurationString,
                 Height = 15,
                 Location = movieTitleLabel.Location
             };
             movieDurationLabel.Left += 300;
-            Button watchSessionsButton = new Button()
+            Button buyTicketButton = new Button()
             {
-                Text = "Seansid",
+                Text = "Osta pilet",
                 Location = movieDurationLabel.Location,
                 BackColor = Color.Orange,
                 FlatStyle = FlatStyle.Flat
             };
-            watchSessionsButton.FlatAppearance.BorderSize = 1;
-            watchSessionsButton.Top += 15;
-            watchSessionsButton.Click += (s, e) =>
+            buyTicketButton.FlatAppearance.BorderSize = 1;
+            buyTicketButton.Top += 15;
+            buyTicketButton.Click += (s, e) =>
             {
-                 
+                
             };
             return new Control[]
-                {movieTitleLabel, movieDirectorLabel, movieYearLabel, movieDurationLabel, watchSessionsButton};
+                {movieTitleLabel, movieDirectorLabel, movieYearLabel, movieDurationLabel, buyTicketButton};
         }
     }
 }

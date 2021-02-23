@@ -1,6 +1,6 @@
 ﻿namespace tthk_kinoteater.Enums
 {
-    enum Stage
+    public enum Stage
     {
         MovieOverview,
         SessionOverview,

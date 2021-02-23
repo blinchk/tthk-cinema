@@ -36,23 +36,7 @@ namespace tthk_kinoteater
                 Size = new Size(500, 1000)
             };
             InitializeComponent();
-            Controls.Add(moviePage);
-        }
-
-        private void DisplaySessions(DateTime date)
-        {
-            dataHandler = new DataHandler();
-            List<Session> sessions = dataHandler.GetSessions()
-                .Where(s => s.StartTime.Date == date.Date)
-                .ToList();
-        }
-        
-        private void DisplaySessions(Movie movie)
-        {
-            dataHandler = new DataHandler();
-            List<Session> sessions = dataHandler.GetSessions()
-                .Where(s => s.Movie == movie)
-                .ToList();
+            
         }
 
         private void InitializeSession(Session session)
@@ -78,9 +62,10 @@ namespace tthk_kinoteater
             switch (stage)
             {  
                 case Stage.SessionOverview:
-                    DisplaySessions(DateTime.Now);
+                    Controls.Add(new SessionPage());
                     break;
                 case Stage.MovieOverview:
+                    Controls.Add(new MoviePage());
                     break;
             }
         }
