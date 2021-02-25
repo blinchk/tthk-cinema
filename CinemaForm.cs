@@ -14,7 +14,7 @@ namespace tthk_kinoteater
     {
         private DataHandler dataHandler;
         private Stage stage;
-        private Stage Stage
+        public Stage Stage
         {
             get => stage;
             set
@@ -31,12 +31,7 @@ namespace tthk_kinoteater
             Stage = DefaultStage;
             BackColor = SpaceGray;
             ForeColor = Color.White;
-            MoviePage moviePage = new MoviePage()
-            {
-                Size = new Size(500, 1000)
-            };
             InitializeComponent();
-            
         }
 
         private void InitializeSession(Session session)
@@ -62,10 +57,18 @@ namespace tthk_kinoteater
             switch (stage)
             {  
                 case Stage.SessionOverview:
-                    Controls.Add(new SessionPage());
+                    var sessionPage = new SessionPage()
+                    {
+                        Size = new Size(500, 1000)
+                    };
+                    Controls.Add(sessionPage);
                     break;
                 case Stage.MovieOverview:
-                    Controls.Add(new MoviePage());
+                    var moviePage = new MoviePage()
+                    {
+                        Size = new Size(500, 1000),
+                    };
+                    Controls.Add(moviePage);
                     break;
             }
         }

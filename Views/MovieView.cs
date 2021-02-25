@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using tthk_kinoteater.Enums;
 using tthk_kinoteater.Models;
 
 namespace tthk_kinoteater.Views
@@ -55,7 +56,8 @@ namespace tthk_kinoteater.Views
             watchSessionsButton.Top += 15;
             watchSessionsButton.Click += (s, e) =>
             {
-                 
+                CinemaForm mainForm = ParentForm as CinemaForm;
+                if (mainForm != null) mainForm.Stage = Stage.SessionOverview;
             };
             return new Control[]
                 {movieTitleLabel, movieDirectorLabel, movieYearLabel, movieDurationLabel, watchSessionsButton};

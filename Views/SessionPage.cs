@@ -106,21 +106,32 @@ namespace tthk_kinoteater.Views
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 DataSource = sessionsDates,
-                Left = directorsComboBox.Left + 125,
-                Top = yearsComboBox.Top + 50,
-                Width = 50
+                Left = yearsComboBox.Left + 50,
+                Top = moviesStageTitleLabel.Top + 50,
+                Width = 100
             };
-            Controls.Add(yearsComboBox);
+            Controls.Add(titlesComboBox);
             Controls.Add(directorsComboBox);
+            Controls.Add(yearsComboBox);
+            Controls.Add(datesComboBox);
+            titlesComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
             yearsComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
             directorsComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
+            datesComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
         }
 
         private void FilterComboBoxOnSelectedValueChanged(object sender, EventArgs e)
         {
+            var title = titlesComboBox.SelectedValue.ToString();
             var year = yearsComboBox.SelectedValue.ToString();
             var director = directorsComboBox.SelectedValue.ToString();
+            var date = directorsComboBox.SelectedValue.ToString();
             var selectedSessions = sessions;
+            if (!String.IsNullOrEmpty(title))
+            {
+                selectedSessions = selectedSessions.Where(s => s.Movie.Title == title).ToList();
+            }
+            
             if (!String.IsNullOrEmpty(year))
             {
                 selectedSessions = selectedSessions.Where(s => s.Movie.Year == Convert.ToInt32(year)).ToList();
@@ -129,6 +140,10 @@ namespace tthk_kinoteater.Views
             if (!String.IsNullOrEmpty(director))
             {
                 selectedSessions = selectedSessions.Where(s => s.Movie.Director == director).ToList();
+            }
+            if (!String.IsNullOrEmpty(date))
+            {
+                selectedSessions = selectedSessions.Where(s => s.StartTime.Date == Convert.ToDateTime(date)).ToList();
             }
             Controls.Remove(sessionList);
             sessionList = new SessionList(selectedSessions)
