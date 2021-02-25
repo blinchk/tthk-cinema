@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using tthk_kinoteater.Enums;
@@ -51,6 +48,36 @@ namespace tthk_kinoteater
             };
         }
 
+        private void DisplayStageChangeCheckBox(Stage stage)
+        {
+            CheckBox stageCheckBox = new CheckBox()
+            {
+                Location = new Point(350, 10),
+                Size = new Size(100, 30),
+                TextAlign = ContentAlignment.MiddleCenter,
+                BackColor = Color.Orange,
+                FlatStyle = FlatStyle.Flat
+            };
+            stageCheckBox.Text = stage switch
+            {
+                Stage.SessionOverview => "Kõik filmid",
+                Stage.MovieOverview => "Kõik seansid",
+                _ => stageCheckBox.Text
+            };
+            stageCheckBox.CheckedChanged += StageCheckBoxOnCheckedChanged;
+            stageCheckBox.Appearance = Appearance.Button;
+            Controls.Add(stageCheckBox);
+            stageCheckBox.BringToFront();
+        }
+
+        private void StageCheckBoxOnCheckedChanged(object sender, EventArgs e)
+        {
+            if (sender is CheckBox)
+            {
+                Stage = Stage == Stage.MovieOverview ? Stage.SessionOverview : Stage.MovieOverview;
+            }
+        }
+
         private void DisplayCurrentStage()
         {
             Controls.Clear();
@@ -71,6 +98,7 @@ namespace tthk_kinoteater
                     Controls.Add(moviePage);
                     break;
             }
+            DisplayStageChangeCheckBox(stage);
         }
     }
 }
