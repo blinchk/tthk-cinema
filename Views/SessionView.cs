@@ -8,6 +8,7 @@ namespace tthk_kinoteater.Views
     {
         public SessionView(Session session)
         {
+            Controls.AddRange(InitializeControls(session));
             InitializeComponent();
         }
         
@@ -23,29 +24,30 @@ namespace tthk_kinoteater.Views
             };
             Label movieDirectorLabel = new Label()
             {
-                Text = session.Movie.Director,
+                Text = $"{session.Movie.Director} | {session.Movie.YearString} | {session.Movie.DurationString}",
                 Height = 15,
+                Width = 200,
                 Location = movieTitleLabel.Location
             };
             movieDirectorLabel.Top += 20;
             Label movieYearLabel = new Label()
             {
-                Text = session.Movie.YearString,
+                Text = $"Saal: {session.Hall}",
                 Height = 15,
                 Location = movieDirectorLabel.Location
             };
             movieYearLabel.Top += 15;
-            Label movieDurationLabel = new Label()
+            Label sessionTimeLabel = new Label()
             {
-                Text = session.Movie.DurationString,
+                Text = session.TimeString,
                 Height = 15,
                 Location = movieTitleLabel.Location
             };
-            movieDurationLabel.Left += 300;
+            sessionTimeLabel.Left += 300;
             Button buyTicketButton = new Button()
             {
                 Text = "Osta pilet",
-                Location = movieDurationLabel.Location,
+                Location = sessionTimeLabel.Location,
                 BackColor = Color.Orange,
                 FlatStyle = FlatStyle.Flat
             };
@@ -56,7 +58,7 @@ namespace tthk_kinoteater.Views
                 
             };
             return new Control[]
-                {movieTitleLabel, movieDirectorLabel, movieYearLabel, movieDurationLabel, buyTicketButton};
+                {movieTitleLabel, movieDirectorLabel, movieYearLabel, sessionTimeLabel, buyTicketButton};
         }
     }
 }

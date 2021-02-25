@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace tthk_kinoteater.Models
 {
@@ -9,7 +10,7 @@ namespace tthk_kinoteater.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime => StartTime + Movie.Duration;
         public int Duration => Convert.ToInt32(Movie.Duration.TotalMinutes);
-        public string TimeString => $"{StartTime.TimeOfDay}-{EndTime.TimeOfDay}";
+        public string TimeString => $"{StartTime.ToString(@"d.MM H\:mm")}-{EndTime.TimeOfDay.ToString(@"h\:mm")}";
         public string DurationString => Duration + " min";
         public Hall Hall { get; set; }
         public int NumberOfTickets => Convert.ToInt32(Hall.NumberOfPlaces);

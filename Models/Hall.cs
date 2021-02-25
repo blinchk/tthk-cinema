@@ -7,5 +7,10 @@ namespace tthk_kinoteater.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public HallSize NumberOfPlaces { get; set; }
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }

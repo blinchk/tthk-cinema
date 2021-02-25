@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using tthk_kinoteater.Enums;
 using tthk_kinoteater.Models;
 
@@ -9,10 +10,8 @@ namespace tthk_kinoteater
 {
     class DataHandler
     {
-        private readonly SqlConnection connection = new SqlConnection(
-            @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =|DataDirectory|\AppData\cinema.mdf; Integrated Security = True");
-        private SqlCommand command;
-
+        private readonly SqlConnection connection = new(
+            @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =|DataDirectory|\AppData\cinema.mdf; Integrated Security = True; MultipleActiveResultSets=true;");
         public DataHandler()
         {
             connection.Open();
@@ -39,41 +38,22 @@ namespace tthk_kinoteater
             }
         }
 
-        public Movie GetMovie(int id)
+        public List<Hall> GetHalls()
         {
-            command = new SqlCommand("SELECT * FROM Movies WHERE Id = @id", connection);
-            command.Parameters.AddWithValue("@id", id);
-            Movie movie = new Movie();
-            using (var reader = command.ExecuteReader())
+            var command = new SqlCommand("SELECT * FROM Halls", connection);
+            var halls = new List<Hall>();
+            var reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                while (reader.Read())
+                var hall = new Hall
                 {
-                    movie.Id = id;
-                    movie.Title = reader["Title"].ToString();
-                    movie.Year = Convert.ToInt32(reader["Email"].ToString());
-                    movie.Director = reader["Director"].ToString();
-                    movie.Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()));
-                }
+                    Id = Convert.ToInt32(reader["Id"].ToString()),
+                    Title = reader["Title"].ToString(),
+                    NumberOfPlaces = ConvertPlacesNumber(Convert.ToInt32(reader["HallSize"].ToString()))
+                };
+                halls.Add(hall);
             }
-            TryToCloseConnection();
-            return movie;
-        }
-
-        public Hall GetHall(int id)
-        {
-            command = new SqlCommand("SELECT * FROM Halls", connection);
-            var hall = new Hall();
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    hall.Id = id;
-                    hall.Title = reader["Title"].ToString();
-                    hall.NumberOfPlaces = ConvertPlacesNumber(Convert.ToInt32(reader["HallSize"].ToString()));
-                }
-            }
-            TryToCloseConnection();
-            return hall;
+            return halls;
         }
 
         public List<Place> GetPlaces(Hall hall)
@@ -96,45 +76,44 @@ namespace tthk_kinoteater
 
         public List<Session> GetSessions()
         {
+            var dataHandler = new DataHandler();
+            var movies = dataHandler.GetMovies();
+            var halls = dataHandler.GetHalls();
             List<Session> sessions = new List<Session>();
-            command = new SqlCommand("SELECT * FROM Sessions;", connection);
-            using (var reader = command.ExecuteReader())
+            var command = new SqlCommand("SELECT * FROM Sessions", connection);
+            var reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                while (reader.Read())
+                var movie = Convert.ToInt32(reader["Movie"].ToString());
+                var hall = Convert.ToInt32(reader["Hall"].ToString());
+                Session session = new Session
                 {
-                    Session session = new Session
-                    {
-                        Id = Convert.ToInt32(reader["Id"].ToString()),
-                        Movie = GetMovie(Convert.ToInt32(reader["Id"].ToString())),
-                        StartTime = Convert.ToDateTime(reader["StartTime"].ToString())
-                    };
-                    sessions.Add(session);
-                }
+                    Id = Convert.ToInt32(reader["Id"].ToString()),
+                    Movie = movies.First(m => m.Id == movie),
+                    Hall = halls.First(h => h.Id == hall)
+                };
+                sessions.Add(session);
             }
-            TryToCloseConnection();
             return sessions;
         }
 
         public List<Movie> GetMovies()
         {
             List<Movie> movies = new List<Movie>();
-            command = new SqlCommand("SELECT * FROM Movies;", connection);
-            using (var reader = command.ExecuteReader())
+            var command = new SqlCommand("SELECT * FROM Movies;", connection);
+            var reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                while (reader.Read())
+                Movie movie = new Movie
                 {
-                    Movie movie = new Movie
-                    {
-                        Id = Convert.ToInt32(reader["Id"].ToString()),
-                        Title = reader["Title"].ToString(),
-                        Year = Convert.ToInt32(reader["Year"].ToString()),
-                        Director = reader["Director"].ToString(),
-                        Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()))
-                    };
-                    movies.Add(movie);
-                }
+                    Id = Convert.ToInt32(reader["Id"].ToString()),
+                    Title = reader["Title"].ToString(),
+                    Year = Convert.ToInt32(reader["Year"].ToString()),
+                    Director = reader["Director"].ToString(),
+                    Duration = TimeSpan.FromMinutes(Convert.ToInt32(reader["Duration"].ToString()))
+                };
+                movies.Add(movie);
             }
-            TryToCloseConnection();
             return movies;
         }
     }

@@ -9,14 +9,13 @@ namespace tthk_kinoteater.Views
 {
     public partial class SessionPage : UserControl
     {
-        private DataHandler dataHandler;
         private SessionList sessionList;
         private List<Session> sessions;
         
         public SessionPage()
         {
             InitializeComponent();
-            dataHandler = new DataHandler();
+            var dataHandler = new DataHandler();
             sessions = dataHandler.GetSessions();
             LoadHeaders(sessions);
             sessionList = new SessionList(sessions)
@@ -30,7 +29,7 @@ namespace tthk_kinoteater.Views
         public SessionPage(Movie movie)
         {
             InitializeComponent();
-            dataHandler = new DataHandler();
+            var dataHandler = new DataHandler();
             sessions = dataHandler.GetSessions();
             LoadHeaders(sessions);
             titlesComboBox.SelectedItem = movie;
@@ -45,7 +44,7 @@ namespace tthk_kinoteater.Views
         public SessionPage(DateTime date)
         {
             InitializeComponent();
-            dataHandler = new DataHandler();
+            var dataHandler = new DataHandler();
             sessions = dataHandler.GetSessions();
             LoadHeaders(sessions);
             datesComboBox.SelectedItem = date.Date;
@@ -125,7 +124,7 @@ namespace tthk_kinoteater.Views
             var title = titlesComboBox.SelectedValue.ToString();
             var year = yearsComboBox.SelectedValue.ToString();
             var director = directorsComboBox.SelectedValue.ToString();
-            var date = directorsComboBox.SelectedValue.ToString();
+            var date = datesComboBox.SelectedValue.ToString();
             var selectedSessions = sessions;
             if (!String.IsNullOrEmpty(title))
             {
@@ -143,7 +142,7 @@ namespace tthk_kinoteater.Views
             }
             if (!String.IsNullOrEmpty(date))
             {
-                selectedSessions = selectedSessions.Where(s => s.StartTime.Date == Convert.ToDateTime(date)).ToList();
+                selectedSessions = selectedSessions.Where(s => s.StartTime.Date == Convert.ToDateTime(date).Date).ToList();
             }
             Controls.Remove(sessionList);
             sessionList = new SessionList(selectedSessions)
@@ -183,7 +182,7 @@ namespace tthk_kinoteater.Views
         
         private string[] GetDates(List<Session> sessionsToFilter)
         {
-            return sessionsToFilter.Select(s => s.StartTime.Date.ToString())
+            return sessionsToFilter.Select(s => s.StartTime.Date.ToString("d.MM.yyyy"))
                 .Append("")
                 .OrderBy(s => s)
                 .Distinct()

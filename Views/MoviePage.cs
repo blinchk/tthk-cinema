@@ -9,7 +9,6 @@ namespace tthk_kinoteater.Views
 {
     public partial class MoviePage : UserControl
     {
-        private DataHandler dataHandler;
         private ComboBox yearsComboBox;
         private ComboBox directorsComboBox;
         private MovieList movieList;
@@ -18,7 +17,7 @@ namespace tthk_kinoteater.Views
         public MoviePage()
         {
             InitializeComponent();
-            dataHandler = new DataHandler();
+            var dataHandler = new DataHandler();
             movies = dataHandler.GetMovies();
             LoadHeaders(movies);
             movieList = new MovieList(movies)
