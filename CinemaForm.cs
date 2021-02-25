@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using tthk_kinoteater.Enums;
-using tthk_kinoteater.Models;
 using tthk_kinoteater.Views;
 
 namespace tthk_kinoteater
@@ -29,23 +28,6 @@ namespace tthk_kinoteater
             BackColor = SpaceGray;
             ForeColor = Color.White;
             InitializeComponent();
-        }
-
-        private void InitializeSession(Session session)
-        {
-            Panel sessionPanel = new Panel();
-            Label sessionTimeLabel = new Label()
-            {
-                Text = session.DurationString + " | " + session.TimeString
-            };
-            Label sessionMovieTitleLabel = new Label()
-            {
-                Text = session.Movie.Title
-            };
-            Label sessionMovieInfoLabel = new Label()
-            {
-                Text = session.Movie.Director + " | " + session.Movie.Year + " | " + session.DurationString
-            };
         }
 
         private void DisplayStageChangeCheckBox(Stage stage)
