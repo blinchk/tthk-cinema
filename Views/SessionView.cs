@@ -53,7 +53,7 @@ namespace tthk_kinoteater.Views
             };
             buyTicketButton.FlatAppearance.BorderSize = 1;
             buyTicketButton.Top += 15;
-            buyTicketButton.Click += (s, e) =>
+            buyTicketButton.Click += (sender, args) =>
             {
                 
             };

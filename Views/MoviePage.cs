@@ -19,6 +19,7 @@ namespace tthk_kinoteater.Views
             InitializeComponent();
             var dataHandler = new DataHandler();
             movies = dataHandler.GetMovies();
+            Size = new Size(500, 1000);
             LoadHeaders(movies);
             movieList = new MovieList(movies)
             {

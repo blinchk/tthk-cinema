@@ -54,10 +54,10 @@ namespace tthk_kinoteater.Views
             };
             watchSessionsButton.FlatAppearance.BorderSize = 1;
             watchSessionsButton.Top += 15;
-            watchSessionsButton.Click += (s, e) =>
+            watchSessionsButton.Click += (sender, args) =>
             {
                 CinemaForm mainForm = ParentForm as CinemaForm;
-                if (mainForm != null) mainForm.Stage = Stage.SessionOverview;
+                if (mainForm != null) mainForm.DisplaySelectedMovie(movie);
             };
             return new Control[]
                 {movieTitleLabel, movieDirectorLabel, movieYearLabel, movieDurationLabel, watchSessionsButton};

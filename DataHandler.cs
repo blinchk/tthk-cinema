@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using tthk_kinoteater.Enums;
@@ -15,12 +14,6 @@ namespace tthk_kinoteater
         public DataHandler()
         {
             connection.Open();
-        }
-
-        private void TryToCloseConnection()
-        {
-            if (connection != null && connection.State == ConnectionState.Open)
-                connection.Close();
         }
 
         private HallSize ConvertPlacesNumber(int size)

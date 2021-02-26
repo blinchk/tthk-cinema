@@ -2,15 +2,16 @@
 using System.Drawing;
 using System.Windows.Forms;
 using tthk_kinoteater.Enums;
+using tthk_kinoteater.Models;
 using tthk_kinoteater.Views;
 
 namespace tthk_kinoteater
 {
-    public partial class CinemaForm : Form
+    public sealed partial class CinemaForm : Form
     {
-        private DataHandler dataHandler;
         private Stage stage;
-        public Stage Stage
+
+        private Stage Stage
         {
             get => stage;
             set
@@ -30,7 +31,7 @@ namespace tthk_kinoteater
             InitializeComponent();
         }
 
-        private void DisplayStageChangeCheckBox(Stage stage)
+        private void DisplayStageChangeCheckBox(Stage currentStage)
         {
             CheckBox stageCheckBox = new CheckBox()
             {
@@ -40,7 +41,7 @@ namespace tthk_kinoteater
                 BackColor = Color.Orange,
                 FlatStyle = FlatStyle.Flat
             };
-            stageCheckBox.Text = stage switch
+            stageCheckBox.Text = currentStage switch
             {
                 Stage.SessionOverview => "Kõik filmid",
                 Stage.MovieOverview => "Kõik seansid",
@@ -66,20 +67,24 @@ namespace tthk_kinoteater
             switch (stage)
             {  
                 case Stage.SessionOverview:
-                    var sessionPage = new SessionPage()
-                    {
-                        Size = new Size(500, 1000)
-                    };
+                    var sessionPage = new SessionPage();
                     Controls.Add(sessionPage);
                     break;
                 case Stage.MovieOverview:
-                    var moviePage = new MoviePage()
-                    {
-                        Size = new Size(500, 1000),
-                    };
+                    var moviePage = new MoviePage();
                     Controls.Add(moviePage);
                     break;
             }
+            DisplayStageChangeCheckBox(stage);
+        }
+
+        public void DisplaySelectedMovie(Movie movie)
+        {
+            Controls.Clear();
+            stage = Stage.MovieOverview;
+            var sessionPage = new SessionPage();
+            Controls.Add(sessionPage);
+            sessionPage.SelectMovie(movie);
             DisplayStageChangeCheckBox(stage);
         }
     }

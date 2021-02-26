@@ -121,6 +121,12 @@
     <Compile Include="Views\SessionView.Designer.cs">
       <DependentUpon>SessionView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\TicketPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\TicketPage.Designer.cs">
+      <DependentUpon>TicketPage.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CinemaForm.resx">
       <DependentUpon>CinemaForm.cs</DependentUpon>
     </EmbeddedResource>

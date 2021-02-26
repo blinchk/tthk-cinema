@@ -18,6 +18,7 @@ namespace tthk_kinoteater.Views
             var dataHandler = new DataHandler();
             sessions = dataHandler.GetSessions();
             LoadHeaders(sessions);
+            Size = new Size(500, 1000);
             sessionList = new SessionList(sessions)
             {
                 Size = new Size(450, 500),
@@ -26,42 +27,12 @@ namespace tthk_kinoteater.Views
             Controls.Add(sessionList);
         }
 
-        public SessionPage(Movie movie)
-        {
-            InitializeComponent();
-            var dataHandler = new DataHandler();
-            sessions = dataHandler.GetSessions();
-            LoadHeaders(sessions);
-            titlesComboBox.SelectedItem = movie;
-            sessionList = new SessionList(sessions)
-            {
-                Size = new Size(450, 500),
-                Location = new Point(0, 0)
-            };
-            Controls.Add(sessionList);
-        }
-        
-        public SessionPage(DateTime date)
-        {
-            InitializeComponent();
-            var dataHandler = new DataHandler();
-            sessions = dataHandler.GetSessions();
-            LoadHeaders(sessions);
-            datesComboBox.SelectedItem = date.Date;
-            sessionList = new SessionList(sessions)
-            {
-                Size = new Size(450, 500),
-                Location = new Point(0, 0)
-            };
-            Controls.Add(sessionList);
-        }
-        
         private ComboBox titlesComboBox;
         private ComboBox yearsComboBox;
         private ComboBox directorsComboBox;
         private ComboBox datesComboBox;
         
-        private void LoadHeaders(List<Session> sessions)
+        private void LoadHeaders(List<Session> currentSessions)
         {
             Label moviesStageTitleLabel = new Label()
             {
@@ -73,7 +44,7 @@ namespace tthk_kinoteater.Views
                 ForeColor = Color.Orange
             };
             Controls.Add(moviesStageTitleLabel);
-            string[] moviesTitles = GetTitles(sessions);
+            string[] moviesTitles = GetTitles(currentSessions);
             titlesComboBox = new ComboBox()
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
@@ -82,7 +53,7 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 125
             };
-            string[] moviesDirectors = GetDirectors(sessions);
+            string[] moviesDirectors = GetDirectors(currentSessions);
             directorsComboBox = new ComboBox()
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
@@ -91,7 +62,7 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 125
             };
-            string[] moviesYears = GetYears(sessions);
+            string[] moviesYears = GetYears(currentSessions);
             yearsComboBox = new ComboBox()
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
@@ -100,7 +71,7 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 50
             };
-            string[] sessionsDates = GetDates(sessions);
+            string[] sessionsDates = GetDates(currentSessions);
             datesComboBox = new ComboBox()
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
@@ -113,13 +84,13 @@ namespace tthk_kinoteater.Views
             Controls.Add(directorsComboBox);
             Controls.Add(yearsComboBox);
             Controls.Add(datesComboBox);
-            titlesComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
-            yearsComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
-            directorsComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
-            datesComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedValueChanged;
+            titlesComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedIndexChanged;
+            yearsComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedIndexChanged;
+            directorsComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedIndexChanged;
+            datesComboBox.SelectedIndexChanged += FilterComboBoxOnSelectedIndexChanged;
         }
 
-        private void FilterComboBoxOnSelectedValueChanged(object sender, EventArgs e)
+        private void FilterComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
             var title = titlesComboBox.SelectedValue.ToString();
             var year = yearsComboBox.SelectedValue.ToString();
@@ -149,7 +120,7 @@ namespace tthk_kinoteater.Views
             {
                 Size = new Size(450, 500),
                 Location = new Point(0, 0)
-            };;
+            };
             Controls.Add(sessionList);
         }
 
@@ -187,6 +158,11 @@ namespace tthk_kinoteater.Views
                 .OrderBy(s => s)
                 .Distinct()
                 .ToArray();
+        }
+
+        internal void SelectMovie(Movie movie)
+        {
+            titlesComboBox.SelectedItem = movie.Title;
         }
     }
 }
