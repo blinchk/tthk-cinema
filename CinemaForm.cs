@@ -22,7 +22,7 @@ namespace tthk_kinoteater
         }
 
         const Stage DefaultStage = Stage.MovieOverview;
-        static Color SpaceGray = Color.FromArgb(52, 61, 70);
+        private static readonly Color SpaceGray = Color.FromArgb(52, 61, 70);
         public CinemaForm()
         {
             Stage = DefaultStage;
@@ -86,6 +86,14 @@ namespace tthk_kinoteater
             Controls.Add(sessionPage);
             sessionPage.SelectMovie(movie);
             DisplayStageChangeCheckBox(stage);
+        }
+
+        public void DisplayTickets(Session session)
+        {
+            Controls.Clear();
+            stage = Stage.PlaceChoice;
+            var ticketPage = new TicketPage(session);
+            Controls.Add(ticketPage);
         }
     }
 }

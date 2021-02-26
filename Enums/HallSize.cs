@@ -3,7 +3,7 @@
     public enum HallSize
     {
         Small = 30,
-        Medium = 70,
+        Medium = 60,
         Big = 120
     }
 }

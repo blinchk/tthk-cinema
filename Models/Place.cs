@@ -4,32 +4,43 @@ using tthk_kinoteater.Enums;
 
 namespace tthk_kinoteater.Models
 {
-    class Place
+    public class Place
     {
         public int Number { get; set; }
         public int Row { get; set; }
         public Hall Hall { get; set; }
+        public double TicketAdditionalCost => 0.10 * Row;
         public PlaceStatus IsBusy { get; set; }
         public CheckBox GetCheckBox(Session session)
         {
-            CheckBox placeCheckBox = new CheckBox();
+            CheckBox placeCheckBox = new CheckBox()
+            {
+                CheckAlign = ContentAlignment.MiddleCenter
+            };
+            placeCheckBox = UpdateCheckBox(placeCheckBox);
+            return placeCheckBox;
+        }
+
+        public CheckBox UpdateCheckBox(CheckBox checkBox)
+        {
             if (IsBusy == PlaceStatus.Occupied)
             {
-                placeCheckBox.Enabled = false;
-                placeCheckBox.Checked = true;
-                placeCheckBox.BackColor = Color.Red;
+                checkBox.Enabled = false;
+                checkBox.Checked = true;
+                checkBox.BackColor = Color.Red;
             }
             else if (IsBusy == PlaceStatus.Selected)
             {
-                placeCheckBox.Checked = true;
-                placeCheckBox.BackColor = Color.Yellow;
+                checkBox.Checked = true;
+                checkBox.BackColor = Color.Yellow;
             }
             else
             {
-                placeCheckBox.Checked = false;
-                placeCheckBox.BackColor = Color.Green;
+                checkBox.Checked = false;
+                checkBox.BackColor = Color.Green;
             }
-            return placeCheckBox;
+
+            return checkBox;
         }
     }
 }

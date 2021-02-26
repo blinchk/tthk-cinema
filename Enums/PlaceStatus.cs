@@ -1,6 +1,6 @@
 ﻿namespace tthk_kinoteater.Enums
 {
-    enum PlaceStatus
+    public enum PlaceStatus
     {
         Free,
         Selected,

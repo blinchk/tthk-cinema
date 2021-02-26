@@ -42,8 +42,9 @@ namespace tthk_kinoteater
                 {
                     Id = Convert.ToInt32(reader["Id"].ToString()),
                     Title = reader["Title"].ToString(),
-                    NumberOfPlaces = ConvertPlacesNumber(Convert.ToInt32(reader["HallSize"].ToString()))
+                    NumberOfPlaces = ConvertPlacesNumber(Convert.ToInt32(reader["HallSize"].ToString())),
                 };
+                hall.Places = GetPlaces(hall);
                 halls.Add(hall);
             }
             return halls;
@@ -53,9 +54,9 @@ namespace tthk_kinoteater
         {
             List<Place> places = new List<Place>();
             int numberOfPlaces = Convert.ToInt32(hall.NumberOfPlaces);
-            for (int row = 1; row <= numberOfPlaces/10; row++)
+            for (var row = 1; row <= numberOfPlaces/10; row++)
             {
-                for (int column = 1; column <= 10; column++)
+                for (var column = 1; column <= 12; column++)
                 {
                     places.Add(new Place() { 
                         Hall = hall,
