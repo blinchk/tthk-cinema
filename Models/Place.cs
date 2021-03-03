@@ -11,6 +11,7 @@ namespace tthk_kinoteater.Models
         public Hall Hall { get; set; }
         public double TicketAdditionalCost => 0.10 * Row;
         public PlaceStatus IsBusy { get; set; }
+        public bool IsRecommended { get; set; }
 
         public CheckBox GetCheckBox(Session session)
         {

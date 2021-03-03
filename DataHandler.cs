@@ -54,10 +54,11 @@ namespace tthk_kinoteater
 
         public List<Place> GetPlaces(Hall hall)
         {
+            const int placesInRow = 12;
             var places = new List<Place>();
             var numberOfPlaces = Convert.ToInt32(hall.NumberOfPlaces);
-            for (var row = 1; row <= numberOfPlaces / 10; row++)
-            for (var column = 1; column <= 12; column++)
+            for (var row = 1; row <= numberOfPlaces / placesInRow; row++)
+            for (var column = 1; column <= placesInRow; column++)
                 places.Add(new Place
                 {
                     Hall = hall,

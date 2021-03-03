@@ -32,7 +32,7 @@ namespace tthk_kinoteater.Models
                     EnableSsl = true
                 };
                 foreach (var recipent in Recipients) message.To.Add(recipent);
-                message.From = new MailAddress(Sender, "Kino");
+                message.From = new MailAddress(Sender, "Kino OÜ");
                 message.Body = Body;
                 message.IsBodyHtml = true;
                 message.Subject = Subject;

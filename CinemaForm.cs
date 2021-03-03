@@ -102,5 +102,13 @@ namespace tthk_kinoteater
             var receptionPage = new ReceptionPage(places, session);
             Controls.Add(receptionPage);
         }
+
+        public void DisplayCongratulations(string name)
+        {
+            Controls.Clear();
+            stage = Stage.Congratulation;
+            var congratulationsPage = new CongratulationsPage(name);
+            Controls.Add(congratulationsPage);
+        }
     }
 }

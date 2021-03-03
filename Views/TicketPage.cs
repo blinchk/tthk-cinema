@@ -45,17 +45,22 @@ namespace tthk_kinoteater.Views
             Controls.Add(amountLabel);
             Size = new Size(1000, 1000);
             var dataHandler = new DataHandler();
-            var busyPlaces = dataHandler.GetTickets(session);
+            var buyedTickets = dataHandler.GetTickets(session);
             InitializeComponent();
+            double rowsAverage = Convert.ToInt32(session.Hall.NumberOfPlaces) / 12 / 2;
             foreach (var place in session.Hall.Places)
             {
+                if (buyedTickets.Any(t => t.Row == place.Row && t.Number == place.Number))
+                {
+                    place.IsBusy = PlaceStatus.Occupied;
+                }
                 var placeCheckBox = place.GetCheckBox(session);
+                if (place.IsBusy == PlaceStatus.Free && Math.Abs(rowsAverage-place.Row+1) < 1)
+                {
+                    placeCheckBox.BackColor = Color.Orange;
+                }
                 placeCheckBox.Size = new Size(30, 30);
                 placeCheckBox.Location = new Point(30 * place.Number, 30 * place.Row);
-                if (busyPlaces.Where(t => t.Row == place.Row && t.Number == place.Number).ToList().Count != 0)
-                    place.IsBusy = PlaceStatus.Occupied;
-                else
-                    place.IsBusy = PlaceStatus.Free;
                 placeCheckBox.CheckedChanged += (sender, args) =>
                 {
                     switch (place.IsBusy)
@@ -68,6 +73,10 @@ namespace tthk_kinoteater.Views
                         case PlaceStatus.Selected:
                             place.IsBusy = PlaceStatus.Free;
                             placeCheckBox = place.UpdateCheckBox(placeCheckBox);
+                            if (Math.Abs(rowsAverage-place.Row+1) < 1)
+                            {
+                                placeCheckBox.BackColor = Color.Orange;
+                            }
                             if (selectedPlaces.Contains(place)) selectedPlaces.Remove(place);
                             break;
                     }

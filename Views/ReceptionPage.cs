@@ -46,7 +46,7 @@ namespace tthk_kinoteater.Views
             {
                 Text = String.Join("\n", purchaseStrings.ToArray()) + "\n" + purchaseAmount,
                 Location = new Point(50, 50),
-                Size = new Size(350, purchaseStrings.Count*20),
+                Size = new Size(350, purchaseStrings.Count*20+15),
                 TextAlign = ContentAlignment.MiddleCenter
             };
             nameLabel = new Label()
@@ -111,12 +111,22 @@ namespace tthk_kinoteater.Views
 
         private void PurchaseButtonOnClick(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(emailTextBox.Text) && !String.IsNullOrEmpty(nameTextBox.Text) && emailTextBox.Text.Contains("@"))
+            string name = nameTextBox.Text.Trim();
+            if (!String.IsNullOrEmpty(emailTextBox.Text) && !String.IsNullOrEmpty(name) && emailTextBox.Text.Contains("@"))
             {
                 var result = SendReceipt();
                 if (result)
                 {
-                    
+                    DataHandler dataHandler = new DataHandler();
+                    foreach (var place in selectedPlaces)
+                    {
+                        dataHandler.AddTicket(new Ticket()
+                        {
+                            Row = place.Row,
+                            Number = place.Number
+                        }, session);
+                    } 
+                    if (ParentForm is CinemaForm mainForm) mainForm.DisplayCongratulations(name);
                 }
                 else
                 {
@@ -133,13 +143,19 @@ namespace tthk_kinoteater.Views
 
         private string GenerateTickets()
         {
+            string name = nameTextBox.Text.Trim();
+            string sessionData = $"{session.Movie.Title} | {session.TimeString} | Saal: {session.Hall.Title}";
             string body = System.IO.File.ReadAllText("Assets/Receipt.htm");
-            body = body.Replace("#Session#",
-                $"{session.Movie.Title} | {session.TimeString} | Saal: {session.Hall.Title}");
-            body = body.Replace("#Amount#", $"{PurchaseAmount():F}");
-            body = body.Replace("#Name#", $"{nameTextBox.Text.Trim()}");
-            body = body.Replace("#Tax#", $"{PurchaseAmount()*0.2:F}");
-            body = body.Replace("#Purchase#", String.Join("<br>", purchaseStrings.ToArray()));
+            string amount = PurchaseAmount().ToString("F");
+            string tax = (PurchaseAmount()*0.2).ToString("F");
+            string purchase = String.Join("<br>", purchaseStrings.ToArray());
+            string operationTime = DateTime.Now.ToString(@"dd.MM.yyyy H\:mm\:ss");
+            body = body.Replace("#Session#", sessionData);
+            body = body.Replace("#Amount#", amount);
+            body = body.Replace("#Name#", name);
+            body = body.Replace("#Tax#", tax);
+            body = body.Replace("#Purchase#", purchase);
+            body = body.Replace("#OperationTime#", operationTime);
             return body;
         }
 
