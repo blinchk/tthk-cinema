@@ -110,5 +110,29 @@ namespace tthk_kinoteater
             }
             return movies;
         }
+
+        public List<Ticket> GetTickets(Session session)
+        {
+            List<Ticket> tickets = new List<Ticket>();
+            var command = new SqlCommand("SELECT * FROM Tickets WHERE Session = @session;", connection);
+            command.Parameters.AddWithValue("@session", session.Id);
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Ticket ticket = new Ticket()
+                {
+                    Id = Convert.ToInt32(reader["Id"].ToString()),
+                    Number = Convert.ToInt32(reader["Number"].ToString()),
+                    Row = Convert.ToInt32(reader["Row"].ToString())
+                };
+                tickets.Add(ticket);
+            }
+            return tickets;
+        }
+
+        public void AddTicket(Ticket ticket, Session session)
+        {
+            
+        }
     }
 }

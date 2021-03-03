@@ -11,7 +11,7 @@ namespace tthk_kinoteater
     {
         private Stage stage;
 
-        private Stage Stage
+        public Stage Stage
         {
             get => stage;
             set
