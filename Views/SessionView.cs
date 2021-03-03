@@ -55,8 +55,7 @@ namespace tthk_kinoteater.Views
             buyTicketButton.Top += 15;
             buyTicketButton.Click += (sender, args) =>
             {
-                var mainForm = ParentForm as CinemaForm;
-                if (mainForm != null) mainForm.DisplayTickets(session);
+                if (ParentForm is CinemaForm mainForm) mainForm.DisplayTickets(session);
             };
             return new Control[]
                 {movieTitleLabel, movieDirectorLabel, movieYearLabel, sessionTimeLabel, buyTicketButton};

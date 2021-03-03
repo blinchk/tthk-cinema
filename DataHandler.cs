@@ -83,7 +83,8 @@ namespace tthk_kinoteater
                 {
                     Id = Convert.ToInt32(reader["Id"].ToString()),
                     Movie = movies.First(m => m.Id == movie),
-                    Hall = halls.First(h => h.Id == hall)
+                    Hall = halls.First(h => h.Id == hall),
+                    StartTime = Convert.ToDateTime(reader["StartTime"].ToString())
                 };
                 sessions.Add(session);
             }

@@ -83,6 +83,12 @@
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\CongratulationsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\CongratulationsPage.Designer.cs">
+      <DependentUpon>CongratulationsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReceptionPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
