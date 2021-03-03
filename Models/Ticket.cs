@@ -2,7 +2,7 @@
 
 namespace tthk_kinoteater.Models
 {
-    class Ticket
+    internal class Ticket
     {
         public int Id { get; set; }
         public int Number { get; set; }

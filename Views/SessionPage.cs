@@ -9,9 +9,14 @@ namespace tthk_kinoteater.Views
 {
     public partial class SessionPage : UserControl
     {
+        private ComboBox datesComboBox;
+        private ComboBox directorsComboBox;
         private SessionList sessionList;
-        private List<Session> sessions;
-        
+        private readonly List<Session> sessions;
+
+        private ComboBox titlesComboBox;
+        private ComboBox yearsComboBox;
+
         public SessionPage()
         {
             InitializeComponent();
@@ -27,14 +32,9 @@ namespace tthk_kinoteater.Views
             Controls.Add(sessionList);
         }
 
-        private ComboBox titlesComboBox;
-        private ComboBox yearsComboBox;
-        private ComboBox directorsComboBox;
-        private ComboBox datesComboBox;
-        
         private void LoadHeaders(List<Session> currentSessions)
         {
-            Label moviesStageTitleLabel = new Label()
+            var moviesStageTitleLabel = new Label
             {
                 Text = "Kinokava",
                 Font = new Font(FontFamily.GenericSansSerif, 20, FontStyle.Bold),
@@ -44,8 +44,8 @@ namespace tthk_kinoteater.Views
                 ForeColor = Color.Orange
             };
             Controls.Add(moviesStageTitleLabel);
-            string[] moviesTitles = GetTitles(currentSessions);
-            titlesComboBox = new ComboBox()
+            var moviesTitles = GetTitles(currentSessions);
+            titlesComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 DataSource = moviesTitles,
@@ -53,8 +53,8 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 125
             };
-            string[] moviesDirectors = GetDirectors(currentSessions);
-            directorsComboBox = new ComboBox()
+            var moviesDirectors = GetDirectors(currentSessions);
+            directorsComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 DataSource = moviesDirectors,
@@ -62,8 +62,8 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 125
             };
-            string[] moviesYears = GetYears(currentSessions);
-            yearsComboBox = new ComboBox()
+            var moviesYears = GetYears(currentSessions);
+            yearsComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 DataSource = moviesYears,
@@ -71,8 +71,8 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 50
             };
-            string[] sessionsDates = GetDates(currentSessions);
-            datesComboBox = new ComboBox()
+            var sessionsDates = GetDates(currentSessions);
+            datesComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 DataSource = sessionsDates,
@@ -97,24 +97,17 @@ namespace tthk_kinoteater.Views
             var director = directorsComboBox.SelectedValue.ToString();
             var date = datesComboBox.SelectedValue.ToString();
             var selectedSessions = sessions;
-            if (!String.IsNullOrEmpty(title))
-            {
+            if (!string.IsNullOrEmpty(title))
                 selectedSessions = selectedSessions.Where(s => s.Movie.Title == title).ToList();
-            }
-            
-            if (!String.IsNullOrEmpty(year))
-            {
-                selectedSessions = selectedSessions.Where(s => s.Movie.Year == Convert.ToInt32(year)).ToList();
-            }
 
-            if (!String.IsNullOrEmpty(director))
-            {
+            if (!string.IsNullOrEmpty(year))
+                selectedSessions = selectedSessions.Where(s => s.Movie.Year == Convert.ToInt32(year)).ToList();
+
+            if (!string.IsNullOrEmpty(director))
                 selectedSessions = selectedSessions.Where(s => s.Movie.Director == director).ToList();
-            }
-            if (!String.IsNullOrEmpty(date))
-            {
-                selectedSessions = selectedSessions.Where(s => s.StartTime.Date == Convert.ToDateTime(date).Date).ToList();
-            }
+            if (!string.IsNullOrEmpty(date))
+                selectedSessions = selectedSessions.Where(s => s.StartTime.Date == Convert.ToDateTime(date).Date)
+                    .ToList();
             Controls.Remove(sessionList);
             sessionList = new SessionList(selectedSessions)
             {
@@ -132,7 +125,7 @@ namespace tthk_kinoteater.Views
                 .Distinct()
                 .ToArray();
         }
-        
+
         private string[] GetYears(List<Session> sessionsToFilter)
         {
             return sessionsToFilter.Select(s => s.Movie.Year.ToString())
@@ -150,7 +143,7 @@ namespace tthk_kinoteater.Views
                 .Distinct()
                 .ToArray();
         }
-        
+
         private string[] GetDates(List<Session> sessionsToFilter)
         {
             return sessionsToFilter.Select(s => s.StartTime.Date.ToString("d.MM.yyyy"))

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using tthk_kinoteater.Enums;
@@ -9,7 +10,17 @@ namespace tthk_kinoteater
 {
     public sealed partial class CinemaForm : Form
     {
+        private const Stage DefaultStage = Stage.MovieOverview;
+        private static readonly Color SpaceGray = Color.FromArgb(52, 61, 70);
         private Stage stage;
+
+        public CinemaForm()
+        {
+            Stage = DefaultStage;
+            BackColor = SpaceGray;
+            ForeColor = Color.White;
+            InitializeComponent();
+        }
 
         public Stage Stage
         {
@@ -21,19 +32,9 @@ namespace tthk_kinoteater
             }
         }
 
-        const Stage DefaultStage = Stage.MovieOverview;
-        private static readonly Color SpaceGray = Color.FromArgb(52, 61, 70);
-        public CinemaForm()
-        {
-            Stage = DefaultStage;
-            BackColor = SpaceGray;
-            ForeColor = Color.White;
-            InitializeComponent();
-        }
-
         private void DisplayStageChangeCheckBox(Stage currentStage)
         {
-            CheckBox stageCheckBox = new CheckBox()
+            var stageCheckBox = new CheckBox
             {
                 Location = new Point(350, 10),
                 Size = new Size(100, 30),
@@ -55,17 +56,14 @@ namespace tthk_kinoteater
 
         private void StageCheckBoxOnCheckedChanged(object sender, EventArgs e)
         {
-            if (sender is CheckBox)
-            {
-                Stage = Stage == Stage.MovieOverview ? Stage.SessionOverview : Stage.MovieOverview;
-            }
+            if (sender is CheckBox) Stage = Stage == Stage.MovieOverview ? Stage.SessionOverview : Stage.MovieOverview;
         }
 
         private void DisplayCurrentStage()
         {
             Controls.Clear();
             switch (stage)
-            {  
+            {
                 case Stage.SessionOverview:
                     var sessionPage = new SessionPage();
                     Controls.Add(sessionPage);
@@ -75,6 +73,7 @@ namespace tthk_kinoteater
                     Controls.Add(moviePage);
                     break;
             }
+
             DisplayStageChangeCheckBox(stage);
         }
 
@@ -94,6 +93,14 @@ namespace tthk_kinoteater
             stage = Stage.PlaceChoice;
             var ticketPage = new TicketPage(session);
             Controls.Add(ticketPage);
+        }
+        
+        public void DisplayReception(List<Place> places)
+        {
+            Controls.Clear();
+            stage = Stage.Reception;
+            var receptionPage = new ReceptionPage(places);
+            Controls.Add(receptionPage);
         }
     }
 }

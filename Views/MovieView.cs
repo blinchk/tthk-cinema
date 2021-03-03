@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using tthk_kinoteater.Enums;
 using tthk_kinoteater.Models;
 
 namespace tthk_kinoteater.Views
@@ -9,14 +8,14 @@ namespace tthk_kinoteater.Views
     {
         public MovieView(Movie movie)
         {
-            Control[] controls = InitializeControls(movie);
+            var controls = InitializeControls(movie);
             Controls.AddRange(controls);
             InitializeComponent();
         }
 
         private Control[] InitializeControls(Movie movie)
         {
-            Label movieTitleLabel = new Label()
+            var movieTitleLabel = new Label
             {
                 Text = movie.Title,
                 Width = 300,
@@ -24,28 +23,28 @@ namespace tthk_kinoteater.Views
                 Height = 20,
                 Font = new Font(FontFamily.GenericSansSerif, 10)
             };
-            Label movieDirectorLabel = new Label()
+            var movieDirectorLabel = new Label
             {
                 Text = movie.Director,
                 Height = 15,
                 Location = movieTitleLabel.Location
             };
             movieDirectorLabel.Top += 20;
-            Label movieYearLabel = new Label()
+            var movieYearLabel = new Label
             {
                 Text = movie.YearString,
                 Height = 15,
                 Location = movieDirectorLabel.Location
             };
             movieYearLabel.Top += 15;
-            Label movieDurationLabel = new Label()
+            var movieDurationLabel = new Label
             {
                 Text = movie.DurationString,
                 Height = 15,
                 Location = movieTitleLabel.Location
             };
             movieDurationLabel.Left += 300;
-            Button watchSessionsButton = new Button()
+            var watchSessionsButton = new Button
             {
                 Text = "Seansid",
                 Location = movieDurationLabel.Location,
@@ -56,7 +55,7 @@ namespace tthk_kinoteater.Views
             watchSessionsButton.Top += 15;
             watchSessionsButton.Click += (sender, args) =>
             {
-                CinemaForm mainForm = ParentForm as CinemaForm;
+                var mainForm = ParentForm as CinemaForm;
                 if (mainForm != null) mainForm.DisplaySelectedMovie(movie);
             };
             return new Control[]

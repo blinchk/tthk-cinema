@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using tthk_kinoteater.Enums;
 
 namespace tthk_kinoteater.Models

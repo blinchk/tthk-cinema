@@ -9,11 +9,11 @@ namespace tthk_kinoteater.Views
 {
     public partial class MoviePage : UserControl
     {
-        private ComboBox yearsComboBox;
         private ComboBox directorsComboBox;
         private MovieList movieList;
-        private List<Movie> movies;
-        
+        private readonly List<Movie> movies;
+        private ComboBox yearsComboBox;
+
         public MoviePage()
         {
             InitializeComponent();
@@ -28,10 +28,10 @@ namespace tthk_kinoteater.Views
             };
             Controls.Add(movieList);
         }
-        
+
         private void LoadHeaders(List<Movie> moviesToDistinct)
         {
-            Label moviesStageTitleLabel = new Label()
+            var moviesStageTitleLabel = new Label
             {
                 Text = "Praegu kinos",
                 Font = new Font(FontFamily.GenericSansSerif, 20, FontStyle.Bold),
@@ -41,8 +41,8 @@ namespace tthk_kinoteater.Views
                 ForeColor = Color.Orange
             };
             Controls.Add(moviesStageTitleLabel);
-            string[] moviesDirectors = GetDirectors(moviesToDistinct);
-            directorsComboBox = new ComboBox()
+            var moviesDirectors = GetDirectors(moviesToDistinct);
+            directorsComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 DataSource = moviesDirectors,
@@ -50,8 +50,8 @@ namespace tthk_kinoteater.Views
                 Top = moviesStageTitleLabel.Top + 50,
                 Width = 125
             };
-            string[] moviesYears = GetYears(moviesToDistinct);
-            yearsComboBox = new ComboBox()
+            var moviesYears = GetYears(moviesToDistinct);
+            yearsComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 DataSource = moviesYears,
@@ -70,21 +70,18 @@ namespace tthk_kinoteater.Views
             var year = yearsComboBox.SelectedValue.ToString();
             var director = directorsComboBox.SelectedValue.ToString();
             var selectedMovies = movies;
-            if (!String.IsNullOrEmpty(year))
-            {
+            if (!string.IsNullOrEmpty(year))
                 selectedMovies = selectedMovies.Where(m => m.Year == Convert.ToInt32(year)).ToList();
-            }
 
-            if (!String.IsNullOrEmpty(director))
-            {
+            if (!string.IsNullOrEmpty(director))
                 selectedMovies = selectedMovies.Where(m => m.Director == director).ToList();
-            }
             Controls.Remove(movieList);
             movieList = new MovieList(selectedMovies)
             {
                 Size = new Size(450, 500),
                 Location = new Point(0, 0)
-            };;
+            };
+            ;
             Controls.Add(movieList);
         }
 
@@ -96,7 +93,7 @@ namespace tthk_kinoteater.Views
                 .Distinct()
                 .ToArray();
         }
-        
+
         private string[] GetYears(List<Movie> moviesToFilter)
         {
             return moviesToFilter.Select(m => m.Year.ToString())

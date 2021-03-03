@@ -15,13 +15,13 @@ namespace tthk_kinoteater.Views
 
         private void DisplaySessions(List<Session> sessions)
         {
-            for (int i = 0; i < sessions.Count; i++)
+            for (var i = 0; i < sessions.Count; i++)
             {
                 var session = sessions[i];
                 var sessionView = new SessionView(session)
                 {
                     Size = new Size(450, 100),
-                    Location = new Point(0, 65+65*i)
+                    Location = new Point(0, 65 + 65 * i)
                 };
                 Controls.Add(sessionView);
             }

@@ -11,10 +11,10 @@ namespace tthk_kinoteater.Views
             Controls.AddRange(InitializeControls(session));
             InitializeComponent();
         }
-        
+
         private Control[] InitializeControls(Session session)
         {
-            Label movieTitleLabel = new Label()
+            var movieTitleLabel = new Label
             {
                 Text = session.Movie.Title,
                 Width = 300,
@@ -22,7 +22,7 @@ namespace tthk_kinoteater.Views
                 Height = 20,
                 Font = new Font(FontFamily.GenericSansSerif, 10)
             };
-            Label movieDirectorLabel = new Label()
+            var movieDirectorLabel = new Label
             {
                 Text = $"{session.Movie.Director} | {session.Movie.YearString} | {session.Movie.DurationString}",
                 Height = 15,
@@ -30,21 +30,21 @@ namespace tthk_kinoteater.Views
                 Location = movieTitleLabel.Location
             };
             movieDirectorLabel.Top += 20;
-            Label movieYearLabel = new Label()
+            var movieYearLabel = new Label
             {
                 Text = $"Saal: {session.Hall}",
                 Height = 15,
                 Location = movieDirectorLabel.Location
             };
             movieYearLabel.Top += 15;
-            Label sessionTimeLabel = new Label()
+            var sessionTimeLabel = new Label
             {
                 Text = session.TimeString,
                 Height = 15,
                 Location = movieTitleLabel.Location
             };
             sessionTimeLabel.Left += 300;
-            Button buyTicketButton = new Button()
+            var buyTicketButton = new Button
             {
                 Text = "Osta pilet",
                 Location = sessionTimeLabel.Location,
@@ -55,7 +55,7 @@ namespace tthk_kinoteater.Views
             buyTicketButton.Top += 15;
             buyTicketButton.Click += (sender, args) =>
             {
-                CinemaForm mainForm = ParentForm as CinemaForm;
+                var mainForm = ParentForm as CinemaForm;
                 if (mainForm != null) mainForm.DisplayTickets(session);
             };
             return new Control[]

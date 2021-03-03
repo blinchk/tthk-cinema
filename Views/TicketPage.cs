@@ -10,18 +10,19 @@ namespace tthk_kinoteater.Views
 {
     public partial class TicketPage : UserControl
     {
-        private List<Place> selectedPlaces;
+        private readonly List<Place> selectedPlaces;
+
         public TicketPage(Session session)
         {
             selectedPlaces = new List<Place>();
-            Label amountLabel = new Label()
+            var amountLabel = new Label
             {
                 Text = $"Summa: {PurchaseAmount():F}\nPiletid: {TicketsAmount}",
                 Size = new Size(160, 50),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Location = new Point(400, 300)
             };
-            Button backButton = new Button()
+            var backButton = new Button
             {
                 Text = "Tagasi",
                 Location = new Point(400, 350),
@@ -30,7 +31,7 @@ namespace tthk_kinoteater.Views
                 FlatStyle = FlatStyle.Flat
             };
             backButton.Click += BackButtonOnClick;
-            Button purchaseButton = new Button()
+            var purchaseButton = new Button
             {
                 Text = "Osta",
                 Location = new Point(480, 350),
@@ -41,8 +42,8 @@ namespace tthk_kinoteater.Views
             purchaseButton.Click += PurchaseButtonOnClick;
             Controls.Add(amountLabel);
             Size = new Size(1000, 1000);
-            DataHandler dataHandler = new DataHandler();
-            List<Ticket> busyPlaces = dataHandler.GetTickets(session);
+            var dataHandler = new DataHandler();
+            var busyPlaces = dataHandler.GetTickets(session);
             InitializeComponent();
             foreach (var place in session.Hall.Places)
             {
@@ -50,13 +51,9 @@ namespace tthk_kinoteater.Views
                 placeCheckBox.Size = new Size(30, 30);
                 placeCheckBox.Location = new Point(30 * place.Number, 30 * place.Row);
                 if (busyPlaces.Where(t => t.Row == place.Row && t.Number == place.Number).ToList().Count != 0)
-                {
                     place.IsBusy = PlaceStatus.Occupied;
-                }
                 else
-                {
                     place.IsBusy = PlaceStatus.Free;
-                }
                 placeCheckBox.CheckedChanged += (sender, args) =>
                 {
                     switch (place.IsBusy)
@@ -81,9 +78,11 @@ namespace tthk_kinoteater.Views
             }
         }
 
+        private int TicketsAmount => selectedPlaces.Count;
+
         private void PurchaseButtonOnClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (ParentForm is CinemaForm mainForm && selectedPlaces.Count > 0) mainForm.DisplayReception(selectedPlaces);
         }
 
         private void BackButtonOnClick(object sender, EventArgs e)
@@ -94,11 +93,9 @@ namespace tthk_kinoteater.Views
         private double PurchaseAmount()
         {
             const double basicTicketPrice = 4.90;
-            double additionalCosts = selectedPlaces.Sum(p => p.TicketAdditionalCost);
-            double basicCosts = basicTicketPrice * selectedPlaces.Count;
+            var additionalCosts = selectedPlaces.Sum(p => p.TicketAdditionalCost);
+            var basicCosts = basicTicketPrice * selectedPlaces.Count;
             return additionalCosts + basicCosts;
         }
-
-        private int TicketsAmount => selectedPlaces.Count;
     }
 }

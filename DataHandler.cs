@@ -7,10 +7,11 @@ using tthk_kinoteater.Models;
 
 namespace tthk_kinoteater
 {
-    class DataHandler
+    internal class DataHandler
     {
         private readonly SqlConnection connection = new(
             @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename =|DataDirectory|\AppData\cinema.mdf; Integrated Security = True; MultipleActiveResultSets=true;");
+
         public DataHandler()
         {
             connection.Open();
@@ -18,7 +19,7 @@ namespace tthk_kinoteater
 
         private HallSize ConvertPlacesNumber(int size)
         {
-            switch(size)
+            switch (size)
             {
                 case 1:
                     return HallSize.Small;
@@ -42,29 +43,27 @@ namespace tthk_kinoteater
                 {
                     Id = Convert.ToInt32(reader["Id"].ToString()),
                     Title = reader["Title"].ToString(),
-                    NumberOfPlaces = ConvertPlacesNumber(Convert.ToInt32(reader["HallSize"].ToString())),
+                    NumberOfPlaces = ConvertPlacesNumber(Convert.ToInt32(reader["HallSize"].ToString()))
                 };
                 hall.Places = GetPlaces(hall);
                 halls.Add(hall);
             }
+
             return halls;
         }
 
         public List<Place> GetPlaces(Hall hall)
         {
-            List<Place> places = new List<Place>();
-            int numberOfPlaces = Convert.ToInt32(hall.NumberOfPlaces);
-            for (var row = 1; row <= numberOfPlaces/10; row++)
-            {
-                for (var column = 1; column <= 12; column++)
+            var places = new List<Place>();
+            var numberOfPlaces = Convert.ToInt32(hall.NumberOfPlaces);
+            for (var row = 1; row <= numberOfPlaces / 10; row++)
+            for (var column = 1; column <= 12; column++)
+                places.Add(new Place
                 {
-                    places.Add(new Place() { 
-                        Hall = hall,
-                        Number = column,
-                        Row = row
-                    });
-                }
-            }
+                    Hall = hall,
+                    Number = column,
+                    Row = row
+                });
             return places;
         }
 
@@ -73,14 +72,14 @@ namespace tthk_kinoteater
             var dataHandler = new DataHandler();
             var movies = dataHandler.GetMovies();
             var halls = dataHandler.GetHalls();
-            List<Session> sessions = new List<Session>();
+            var sessions = new List<Session>();
             var command = new SqlCommand("SELECT * FROM Sessions", connection);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 var movie = Convert.ToInt32(reader["Movie"].ToString());
                 var hall = Convert.ToInt32(reader["Hall"].ToString());
-                Session session = new Session
+                var session = new Session
                 {
                     Id = Convert.ToInt32(reader["Id"].ToString()),
                     Movie = movies.First(m => m.Id == movie),
@@ -88,17 +87,18 @@ namespace tthk_kinoteater
                 };
                 sessions.Add(session);
             }
+
             return sessions;
         }
 
         public List<Movie> GetMovies()
         {
-            List<Movie> movies = new List<Movie>();
+            var movies = new List<Movie>();
             var command = new SqlCommand("SELECT * FROM Movies;", connection);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Movie movie = new Movie
+                var movie = new Movie
                 {
                     Id = Convert.ToInt32(reader["Id"].ToString()),
                     Title = reader["Title"].ToString(),
@@ -108,18 +108,19 @@ namespace tthk_kinoteater
                 };
                 movies.Add(movie);
             }
+
             return movies;
         }
 
         public List<Ticket> GetTickets(Session session)
         {
-            List<Ticket> tickets = new List<Ticket>();
+            var tickets = new List<Ticket>();
             var command = new SqlCommand("SELECT * FROM Tickets WHERE Session = @session;", connection);
             command.Parameters.AddWithValue("@session", session.Id);
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Ticket ticket = new Ticket()
+                var ticket = new Ticket
                 {
                     Id = Convert.ToInt32(reader["Id"].ToString()),
                     Number = Convert.ToInt32(reader["Number"].ToString()),
@@ -127,12 +128,12 @@ namespace tthk_kinoteater
                 };
                 tickets.Add(ticket);
             }
+
             return tickets;
         }
 
         public void AddTicket(Ticket ticket, Session session)
         {
-            
         }
     }
 }
