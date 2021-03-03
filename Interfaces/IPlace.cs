@@ -1,4 +1,4 @@
-﻿namespace tthk_kinoteater
+﻿namespace tthk_kinoteater.Interfaces
 {
     public interface IPlace
     {

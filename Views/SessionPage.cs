@@ -9,10 +9,10 @@ namespace tthk_kinoteater.Views
 {
     public partial class SessionPage : UserControl
     {
+        private readonly List<Session> sessions;
         private ComboBox datesComboBox;
         private ComboBox directorsComboBox;
         private SessionList sessionList;
-        private readonly List<Session> sessions;
 
         private ComboBox titlesComboBox;
         private ComboBox yearsComboBox;

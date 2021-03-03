@@ -94,7 +94,7 @@ namespace tthk_kinoteater
             var ticketPage = new TicketPage(session);
             Controls.Add(ticketPage);
         }
-        
+
         public void DisplayReception(List<Place> places, Session session)
         {
             Controls.Clear();

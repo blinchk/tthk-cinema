@@ -22,7 +22,7 @@ namespace tthk_kinoteater.Views
             var backButton = new Button
             {
                 Text = "Tagasi",
-                Location = new Point(50, congratulationsLabel.Top+congratulationsLabel.Height+5),
+                Location = new Point(50, congratulationsLabel.Top + congratulationsLabel.Height + 5),
                 Size = new Size(350, 25),
                 TextAlign = ContentAlignment.MiddleCenter,
                 BackColor = Color.Orange,

@@ -9,9 +9,9 @@ namespace tthk_kinoteater.Views
 {
     public partial class MoviePage : UserControl
     {
+        private readonly List<Movie> movies;
         private ComboBox directorsComboBox;
         private MovieList movieList;
-        private readonly List<Movie> movies;
         private ComboBox yearsComboBox;
 
         public MoviePage()

@@ -11,7 +11,7 @@ namespace tthk_kinoteater.Views
     public partial class TicketPage : UserControl
     {
         private readonly List<Place> selectedPlaces;
-        private Session session;
+        private readonly Session session;
 
         public TicketPage(Session session)
         {
@@ -51,14 +51,10 @@ namespace tthk_kinoteater.Views
             foreach (var place in session.Hall.Places)
             {
                 if (buyedTickets.Any(t => t.Row == place.Row && t.Number == place.Number))
-                {
                     place.IsBusy = PlaceStatus.Occupied;
-                }
-                var placeCheckBox = place.GetCheckBox(session);
-                if (place.IsBusy == PlaceStatus.Free && Math.Abs(rowsAverage-place.Row+1) < 1)
-                {
+                var placeCheckBox = place.GetCheckBox();
+                if (place.IsBusy == PlaceStatus.Free && Math.Abs(rowsAverage - place.Row + 1) < 1)
                     placeCheckBox.BackColor = Color.Orange;
-                }
                 placeCheckBox.Size = new Size(30, 30);
                 placeCheckBox.Location = new Point(30 * place.Number, 30 * place.Row);
                 placeCheckBox.CheckedChanged += (sender, args) =>
@@ -73,10 +69,7 @@ namespace tthk_kinoteater.Views
                         case PlaceStatus.Selected:
                             place.IsBusy = PlaceStatus.Free;
                             placeCheckBox = place.UpdateCheckBox(placeCheckBox);
-                            if (Math.Abs(rowsAverage-place.Row+1) < 1)
-                            {
-                                placeCheckBox.BackColor = Color.Orange;
-                            }
+                            if (Math.Abs(rowsAverage - place.Row + 1) < 1) placeCheckBox.BackColor = Color.Orange;
                             if (selectedPlaces.Contains(place)) selectedPlaces.Remove(place);
                             break;
                     }
@@ -93,7 +86,8 @@ namespace tthk_kinoteater.Views
 
         private void PurchaseButtonOnClick(object sender, EventArgs e)
         {
-            if (ParentForm is CinemaForm mainForm && selectedPlaces.Count > 0) mainForm.DisplayReception(selectedPlaces, session);
+            if (ParentForm is CinemaForm mainForm && selectedPlaces.Count > 0)
+                mainForm.DisplayReception(selectedPlaces, session);
         }
 
         private void BackButtonOnClick(object sender, EventArgs e)
