@@ -4,7 +4,7 @@ using tthk_kinoteater.Enums;
 
 namespace tthk_kinoteater.Models
 {
-    public class Place
+    public class Place : IPlace
     {
         public int Number { get; set; }
         public int Row { get; set; }

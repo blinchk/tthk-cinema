@@ -95,11 +95,11 @@ namespace tthk_kinoteater
             Controls.Add(ticketPage);
         }
         
-        public void DisplayReception(List<Place> places)
+        public void DisplayReception(List<Place> places, Session session)
         {
             Controls.Clear();
             stage = Stage.Reception;
-            var receptionPage = new ReceptionPage(places);
+            var receptionPage = new ReceptionPage(places, session);
             Controls.Add(receptionPage);
         }
     }

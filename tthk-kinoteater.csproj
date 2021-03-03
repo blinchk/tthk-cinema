@@ -74,7 +74,9 @@
     <Compile Include="Enums\HallSize.cs" />
     <Compile Include="Enums\PlaceStatus.cs" />
     <Compile Include="Enums\Stage.cs" />
+    <Compile Include="Interfaces\IPlace.cs" />
     <Compile Include="Models\Hall.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Place.cs" />
     <Compile Include="Models\Session.cs" />
@@ -174,6 +176,9 @@
     <Content Include="AppData\cinema_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>cinema.mdf</DependentUpon>
+    </Content>
+    <Content Include="Assets\Receipt.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="README.md" />
   </ItemGroup>

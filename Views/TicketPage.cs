@@ -11,9 +11,11 @@ namespace tthk_kinoteater.Views
     public partial class TicketPage : UserControl
     {
         private readonly List<Place> selectedPlaces;
+        private Session session;
 
         public TicketPage(Session session)
         {
+            this.session = session;
             selectedPlaces = new List<Place>();
             var amountLabel = new Label
             {
@@ -70,7 +72,7 @@ namespace tthk_kinoteater.Views
                             break;
                     }
 
-                    amountLabel.Text = $"Summa: {PurchaseAmount():F}\nPiletid: {TicketsAmount}";
+                    amountLabel.Text = $"Summa: {PurchaseAmount():F}€\nPiletid: {TicketsAmount}";
                 };
                 Controls.Add(placeCheckBox);
                 Controls.Add(backButton);
@@ -82,7 +84,7 @@ namespace tthk_kinoteater.Views
 
         private void PurchaseButtonOnClick(object sender, EventArgs e)
         {
-            if (ParentForm is CinemaForm mainForm && selectedPlaces.Count > 0) mainForm.DisplayReception(selectedPlaces);
+            if (ParentForm is CinemaForm mainForm && selectedPlaces.Count > 0) mainForm.DisplayReception(selectedPlaces, session);
         }
 
         private void BackButtonOnClick(object sender, EventArgs e)
