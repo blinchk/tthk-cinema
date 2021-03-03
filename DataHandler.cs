@@ -134,6 +134,12 @@ namespace tthk_kinoteater
 
         public void AddTicket(Ticket ticket, Session session)
         {
+            var command = new SqlCommand("INSERT INTO Tickets(Number, Row, Session) VALUES (@number, @row, @session);",
+                connection);
+            command.Parameters.AddWithValue("@number", ticket.Number);
+            command.Parameters.AddWithValue("@row", ticket.Row);
+            command.Parameters.AddWithValue("@session", session.Id);
+            command.ExecuteNonQuery();
         }
     }
 }
